@@ -1,11 +1,7 @@
 [package]
-name = "lamadre_circuits"
+name = "lamadre_gadget"
 type = "lib"
 authors = ["lamadre"]
 edition = "2021"
 
 [dependencies]
-std = { git = "https://github.com/noir-lang/noir", tag = "v0.36.0" }  # realistic recent pin; adjust to match Aztec Noir version
-
-# For full Aztec integration the contract uses aztec.nr which brings its own std + note primitives.
-# The gadget here is intentionally std-only for standalone nargo test of the core relation.

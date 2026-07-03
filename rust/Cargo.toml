@@ -31,9 +31,9 @@ tempfile = "3"
 [features]
 default = []
 
-# [[bin]] disabled until cli implemented
-# name = "lamadre-cli"
-# path = "src/bin/cli.rs"
+[[bin]]
+name = "simulate_swap"
+path = "src/bin/simulate_swap.rs"
 
 [lib]
 path = "src/lib.rs"
