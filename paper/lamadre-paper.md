@@ -232,3 +232,10 @@ Custom contract still needs clean compile (Nargo dep friction), but proxy + simu
 Paper now reflects executable harness + concrete live run data.
 
 **Final 2026-07-04 push:** Harness now emits exact pasteable commands with live values. Token deploy attempted with correct constructor. Monero blocks generated with real wallet address. All parallel tracks (paper, harness, networks, contract prep) advanced and committed.
+
+**Deployment stage clarification (2026-07-04):** 
+We are operating exclusively in the **local Aztec sandbox**. 
+- lamadre-asset (Token) successfully deployed and usable as asset proxy.
+- Custom Lamadre escrow contract: code ready, not yet successfully deployed due to current Nargo environment limitations.
+- Mainnet: not appropriate yet. 
+Roadmap: Local sandbox → Aztec public testnet → (much later) mainnet after full testing + audits.
