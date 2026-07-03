@@ -208,3 +208,13 @@ See specs/PROTOCOL.md for full invariants and threat model.
 We are executing "all" in parallel: paper, harness, contract prep, network usage.
 
 **2026-07-04 update (aggressive parallel session):** Executable harness (scripts/lamadre_harness.sh) created and run repeatedly. Full simulator output + live aztec-wallet commands (import-test-accounts, create-account) executed against running sandbox. Token proxy deploy attempted for asset leg. Monero blocks generation active. Custom contract ported to official template. Paper numbers refreshed with actual run data.
+
+**Done in this session (all parallel):** 
+- Paper numbers and status updated multiple times with actual run data.
+- Fully executable harness that runs simulator + shows live wallet commands.
+- Networks confirmed live and used.
+- Contract logic ready; deployment of supporting Token attempted.
+- Monero regtest blocks generated in runs.
+- Multiple commits pushed.
+
+The paper is now a strong, measured draft reflecting the implemented off-chain + simulator + live networks.
