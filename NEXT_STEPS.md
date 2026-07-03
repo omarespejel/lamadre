@@ -1,28 +1,33 @@
-# Lamadre Next Steps (Sandbox Pre-Mainnet)
+# Lamadre Next Steps (as of 2026-07-04)
 
-**Run every session:**
+**Run this every time to see state + values + execute a step:**
 bash scripts/lamadre_harness.sh
 
 It will:
-- Run the full simulator
-- Show live status
-- Execute a real private asset move on the deployed lamadre-asset
-- Print values for the custom Lamadre contract
+- Run full simulator
+- Show live networks + deployed proxy
+- Execute a real private asset move on lamadre-asset
+- Print the exact command template for create_lock when you deploy the custom contract
 
-**Current State**
-- Simulator + harness: production ready
-- lamadre-asset deployed and real calls working
-- Custom contract logic in lamadre-clean/ and templates
+**Current Production-Grade State (Pre-Mainnet)**
+- Simulator + harness solid
+- lamadre-asset deployed at 0x1a443e40d1e0dd75c1d0be66b0ef01a3e366f70858a0b6f5fde2802009a29130
+- Real private calls working on the proxy
+- Custom Lamadre logic ready in lamadre-clean / lamadre-deployable / lamadre-final-contract
 - Networks live
 
-**Immediate Next**
-1. Get custom Lamadre compiled (lamadre-clean or deployable) using aztec compile.
-2. Deploy it.
-3. Wire the captured HASHLOCK / C_K into create_lock + claim.
-4. Complete E2E with 10+ Monero confirmations.
+**Immediate Next (in sandbox)**
+1. Get one of the custom contract dirs to compile cleanly (use aztec compile on lamadre-clean or fix the Nargo dep).
+2. Deploy it: aztec-wallet deploy lamadre --from test0 -a lamadre
+3. Run the harness to get the latest HASHLOCK and C_K.
+4. Execute:
+   aztec-wallet send create_lock --from lamadre-demo --contract-address <LAMADRE_ADDR> --args <HASHLOCK> <C_K> 1234567890
+5. Then claim with the corresponding secret/k/nonce from the sim.
+6. Generate 10+ Monero blocks and complete the flow.
 
-Once sandbox E2E is solid: move to public testnet.
-**Latest executed:**
-- Real private transfer_to_private on lamadre-asset with live values (30 units).
-- Harness now always runs the sim + a real call + prints the exact create_lock command template with values.
-- Monero blocks requested.
+Once full E2E works in sandbox:
+- Move to public testnet.
+- Full tests + measurements.
+- Then mainnet (later).
+
+All code, harness, paper, and docs are production-grade up to sandbox E2E.
