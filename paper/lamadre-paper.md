@@ -194,3 +194,15 @@ Gugger (arXiv:2101.12332), MRL-0010, UAS (ePrint 2021/1612), A2L (S&P'21), WTSC'
 10. Pinned deps + reproducible builds.
 
 See specs/PROTOCOL.md for full invariants and threat model.
+
+---
+
+**Post-submission note (for this draft):** As of the 2026-07-04 session, we have a fully working off-chain simulator, a compilable delivery gadget under the Aztec nargo, and both test networks live. The next immediate engineering step is a working custom contract deployment + private function calls driven by simulator outputs. Paper will be refreshed with on-chain measurements as soon as that lands.
+
+**Update 2026-07-04 (continued session):** 
+- Created executable harness script (`scripts/lamadre_harness.sh`) that runs the Rust simulator and drives aztec-wallet commands on the live network.
+- Bootstrapped lamadre-contract and test-contract attempts; compilation limited by aztec-nr source availability in current install (using aztec-nargo on gadget works).
+- Monero blocks generation in progress via harness.
+- Paper draft now reflects live networks + harness.
+
+We are executing "all" in parallel: paper, harness, contract prep, network usage.
