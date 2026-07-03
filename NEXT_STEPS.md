@@ -27,3 +27,9 @@ bash scripts/lamadre_harness.sh
 - Prep for audits and mainnet (much later).
 
 All code, tests (via sim), docs, and harness are production-grade.
+
+**Executed:**
+- Real private transfer_to_private on lamadre-asset using live sim values (30 units).
+- Harness now executes a real call every time.
+- Monero blocks advanced.
+- Values printed for when custom contract is deployed.
