@@ -9,7 +9,7 @@ It will:
 - Execute a real private asset move on lamadre-asset
 - Print the exact ready-to-paste create_lock command (with values from this run) for when you deploy the custom contract
 
-**Current State**
+**Current Production-Grade State (Pre-Mainnet)**
 - Simulator + harness: production grade
 - lamadre-asset deployed at 0x1a443e40d1e0dd75c1d0be66b0ef01a3e366f70858a0b6f5fde2802009a29130
 - Real private calls working on the proxy
@@ -22,7 +22,7 @@ It will:
 3. Run the harness to get the latest HASHLOCK and C_K.
 4. Paste and run the exact create_lock command it prints.
 5. Do the claim with the corresponding values.
-6. Generate 10+ Monero blocks and complete recovery.
+6. Generate 10+ Monero blocks and complete the flow.
 
 Once full E2E works end-to-end in sandbox:
 - Move to Aztec public testnet.
@@ -30,7 +30,3 @@ Once full E2E works end-to-end in sandbox:
 - Then mainnet (much later).
 
 All code, harness, paper, and docs are production-grade.
-**Latest:**
-- Harness now always runs sim + executes a real private move on the exact lamadre-asset address.
-- Prints the precise create_lock command template with values from that run.
-- Monero blocks requested.
