@@ -2,7 +2,7 @@
 
 **Authors:** Pseudonymous (consistent handle for development; real entity for grants and publication)
 
-**Version:** 2026-07-03 — Production MVP, full spec + circuits + contract + client implemented.
+**Version:** 2026-07-04 — Strong draft with working off-chain implementation, simulator, and running networks. On-chain deployment in progress.
 
 ---
 
@@ -14,7 +14,7 @@ We formalize the missing property, **enforced disclosure** — a valid claim mus
 
 We instantiate the protocol as, to our knowledge, the first atomic swap between Monero and a private smart-contract rollup (Aztec), private on both legs, with zero public function calls. Our implementation reuses an audited-pattern Rust client and replaces a transparent-chain contract (Cairo/Starknet with on-chain DLEQ verification via Garaga) — giving a direct, same-protocol comparison between on-chain verification on a transparent L2 and a minimal circuit on a private rollup.
 
-Headline numbers (MVP implementation): ~250-420 constraints in the delivery gadget (hashlock + key binding + OTP + tag); client proving <800ms on M-series laptop (PXE); full E2E swap wall time dominated by Monero confirmations (same as prior designs); zero public calls, fully private.
+Current measurements (2026-07-04): Rust off-chain crypto flow (complete simulator) ~300–370 ms; release binary 439 KiB; core Rust ~415 LOC; Noir gadget ~34 LOC; contract skeleton ~221 LOC. Aztec sandbox + Monero regtest both live. On-chain proving numbers and exact constraint counts will be measured once the custom contract is deployed on the sandbox (gadget compiles with aztec-nargo; design targets low hundreds of constraints). Full E2E latency dominated by Monero confirmations.
 
 ---
 
@@ -32,7 +32,7 @@ All of this work shares one leg with a transparent chain. The result is a well-d
 
 *Contribution 2 — A minimal realization and a design principle.* We construct a claim circuit that satisfies enforced disclosure at a cost of a few hundred constraints using a committed-shared-key verifiable encryption (OTP) gadget + Poseidon2. Separately, we exploit the principle: proofs whose only verifier is a protocol participant belong off-chain (off-chain DLEQ). No foreign-curve operations on-chain.
 
-*Contribution 3 — First Monero ↔ private-rollup swap, measured.* Full implementation: Noir gadget, Aztec.nr singleton contract, Rust client, tests, E2E vectors. Private on both legs. Tranching for bounded risk. Zero public calls.
+*Contribution 3 — First Monero ↔ private-rollup swap, implemented and partially measured.* Working Rust client with complete off-chain simulator (including enforced-disclosure gadget), Noir delivery gadget that compiles with the Aztec toolchain, and running Aztec sandbox + Monero regtest. Custom contract deployment in progress. Off-chain crypto flow ~300–370 ms. Private on both legs by design. Tranching and zero-public-call properties preserved.
 
 Non-goals: hiding existence of txs (inherit Aztec anonymity), Monero refund path (future FCMP++), counterparty discovery.
 
@@ -121,29 +121,35 @@ Split value into N tranches (N secrets/notes). Worst-case loss V/N. Batch claims
 
 ## 6. Implementation and Evaluation
 
-### 6.1 Implementation
-- **Noir circuit** (`noir/circuits/minimal_delivery.nr`): hashlock, key binding, OTP PRF (Poseidon), tag derivation, ~250-420 constraints depending on packing. Test vectors included.
-- **Aztec.nr contract** (`contracts/Lamadre.nr`): singleton, custom LockNote + DeliveryNote, private create/claim/refund/batch. Archive proofs for timelocks. Private FPC ready.
-- **Rust client** (`rust/`): off-chain DLEQ, setup, delivery prep, tranching, Monero helpers, proptest + vector tests. Reuses curve25519-dalek + original patterns. Witness generation for Noir.
-- **Tests:** unit, property-based (tranches, delivery), E2E sketches for regtest + sandbox.
-- Pinned versions in manifests. Auditor checklist in PROTOCOL.md.
+### 6.1 Implementation (current status)
+- **Rust client** (`rust/`): Fully functional simulator implementing the complete off-chain flow: two-party keygen, off-chain DLEQ verification, shared key derivation, OTP delivery preparation (`prepare_delivery_otp`), tag derivation, and recovery (`verify_delivery`). Includes proptest-style vectors and the `simulate_swap` binary that executes the entire protocol logic. ~415 LOC core. Release binary ~439 KiB. Reuses `curve25519-dalek`.
+- **Noir gadget** (`noir/src/lib.nr` and original `circuits/minimal_delivery.nr`): Compact gadget for the delivery relation. Compiles and tests cleanly with the Aztec-bundled nargo (v1.0.0-beta). Uses Poseidon2 structure (sha256 fallback used for standalone compatibility in current env; full Poseidon2 in Aztec context). Designed for a few hundred constraints total.
+- **Aztec.nr contract** (`lamadre-aztec/` skeleton + `contracts/Lamadre.nr`): Singleton escrow with custom note-style structures for LockNote + DeliveryNote. Private functions for `create_lock`, `claim` (with enforced disclosure gadget), `refund` (archive-root timelocks), and batching. ~221 LOC in detailed version. Aztec sandbox (v4.3.1) is running; full custom deployment pending resolution of Nargo git dependencies (we have successfully used `aztec-nargo`, `aztec-wallet`, and the running PXE/node).
+- **Networks:** Aztec local network (with Anvil) and Monero regtest (v0.18.5.0) both live and stable for hours. Test accounts and wallets prepared.
+- **Tests:** Rust simulator + property vectors; Noir gadget tests; E2E sketches. Auditor checklist maintained in `specs/PROTOCOL.md`.
 
-### 6.2 Microbenchmarks (MVP on laptop-class)
-- Delivery gadget: ~320 constraints (Poseidon dominant).
-- Witness gen + prove (PXE / bb): < 800 ms cold, < 300 ms warm.
-- Savings vs in-circuit ed25519/DLEQ: 5-10x fewer constraints (no bignum transcript).
-- Tranching overhead: linear in N for notes/nullifiers; batching in one tx keeps it practical.
+### 6.2 Microbenchmarks (current)
+- Off-chain crypto flow (entire simulator: keygen + DLEQ verification + delivery prep + recovery): 300–370 ms (measured over multiple runs on development hardware).
+- Rust core is lightweight; the heavy proving will occur on the Aztec side once the custom contract is deployed.
+- Expected savings from the design: off-chain DLEQ removes all foreign-curve arithmetic from the circuit (5–10× reduction vs. on-chain verification approaches, consistent with original analysis).
+- Gadget size: extremely compact (~34 LOC in the Noir implementation) by moving non-essential verification off-chain.
 
-### 6.3 End-to-end
-- Monero regtest + Aztec sandbox: full swap succeeds.
-- Wall time dominated by 10 Monero confirmations (~20-30 min typical). Aztec private execution + sequencing seconds.
-- Tranche (N=4): 4× notes but single claim tx possible; worst-case exposure 25%.
-- Private FPC fees: negligible vs asset value.
+### 6.3 End-to-end (current status)
+- Off-chain flow fully validated via the Rust simulator (repeated successful runs).
+- Both networks live: Aztec sandbox (v4.3.1, PXE active, blocks produced) and Monero regtest (daemon + wallets).
+- Full on-chain E2E (deploy custom contract → private `create_lock` → private `claim` with delivery gadget → recovery) is the immediate next implementation step. Once wired, wall time will be dominated by the required 10 Monero confirmations plus minimal Aztec private execution latency.
+- Tranching and private FPC design remain as specified; no public calls in the protocol.
 
 ### 6.4 Comparison to prior (Starknet transparent version)
 - Prior: on-chain DLEQ (Garaga) + public calls → higher cost + fingerprint.
 - Lamadre: off-chain DLEQ + minimal private gadget + 0 public calls → cheaper + private.
 - Same security model for the swap atomicity.
+
+**Current Implementation Status (2026-07-04)**
+- Off-chain protocol (including the critical enforced-disclosure gadget logic) is fully implemented and executable via the Rust simulator.
+- Noir delivery gadget compiles and passes tests under the Aztec toolchain.
+- Aztec sandbox and Monero regtest are both running.
+- Custom contract deployment is the remaining on-chain integration task (Nargo dependency resolution in progress; we have working `aztec-nargo` + `aztec-wallet` usage in the environment).
 
 ---
 

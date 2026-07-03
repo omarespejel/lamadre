@@ -1,7 +1,8 @@
 # Lamadre Protocol Specification (Aztec Port - Minimal Circuit Design)
 
 **Version:** 1.0 (Production MVP, Auditor-Ready)
-**Date:** 2026-07-03
+**Date:** 2026-07-04
+**Status:** Off-chain + gadget fully implemented and running. Networks live. Custom on-chain contract deployment in progress.
 **Project:** Lamadre - Private Atomic Swaps + Yield for Monero on Aztec
 **Based on:** Original monero-starknet-atomic-swap + full redesign from research (off-chain DLEQ, committed-key OTP delivery, tranching, enforced disclosure)
 
