@@ -25,3 +25,9 @@ Once E2E in sandbox works end-to-end:
 - Then mainnet (much later).
 
 All code, harness, paper, docs are production-grade.
+
+**Current actionable next:**
+- The harness prints the exact sequence.
+- Focus on getting one successful custom contract deploy in sandbox.
+- Then wire the captured values into create_lock + claim.
+- Measure the full flow.
