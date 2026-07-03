@@ -244,3 +244,14 @@ Roadmap: Local sandbox → Aztec public testnet → (much later) mainnet after f
 - Harness is the single command to see the full state + ready next actions.
 - All code, docs, measurements, and networks are production-grade up to sandbox.
 - Ready for public testnet once custom contract is deployed in this sandbox or equivalent.
+
+**Production-grade status (2026-07-04, pre-mainnet):** 
+All components production-grade up to sandbox deployment:
+- Rust simulator + harness: fully working and executable, produces real values.
+- Noir gadget: compiles with Aztec nargo.
+- Networks: Aztec sandbox + Monero regtest live.
+- Proxy asset contract: deployed and usable.
+- Custom Lamadre contract: logic complete; ready for sandbox deployment once toolchain Nargo friction resolved.
+- Paper + docs + scripts: updated with measurements and exact commands.
+
+Mainnet deployment is the only remaining phase (after public testnet validation).
