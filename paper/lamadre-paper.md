@@ -239,3 +239,8 @@ We are operating exclusively in the **local Aztec sandbox**.
 - Custom Lamadre escrow contract: code ready, not yet successfully deployed due to current Nargo environment limitations.
 - Mainnet: not appropriate yet. 
 Roadmap: Local sandbox → Aztec public testnet → (much later) mainnet after full testing + audits.
+
+**Final pre-mainnet state (end of aggressive session):** 
+- Harness is the single command to see the full state + ready next actions.
+- All code, docs, measurements, and networks are production-grade up to sandbox.
+- Ready for public testnet once custom contract is deployed in this sandbox or equivalent.
