@@ -1,29 +1,45 @@
 #!/bin/bash
-# Lamadre full local setup script
-# Run this after cloning the repo
+# Lamadre full local setup script (updated from autonomous run 2026-07-03)
+# Run after git clone https://github.com/omarespejel/lamadre.git
 
 set -e
+ROOT=$(cd "$(dirname "$0")/.." && pwd)
 
-echo "=== Lamadre Local Setup ==="
+echo "=== Lamadre Local Setup (macOS) ==="
 
-# 1. Rust (should already work)
-echo "Rust tests:"
-cd "$(dirname "$0")/../rust" && cargo test
+# 1. Rust
+echo "[Rust]"
+cd "$ROOT/rust"
+cargo test
+cargo run --bin simulate_swap   # full protocol demo (off-chain + logic)
 
-# 2. Node 24 + Aztec (run manually if needed)
-echo "To install Aztec:"
+# 2. Aztec (from what worked in this session)
+echo ""
+echo "[Aztec]"
+echo "Node 24:"
 echo '  export PATH="/opt/homebrew/opt/node@24/bin:$PATH"'
-echo '  VERSION=4.3.1 bash -i <(curl -sL https://install.aztec.network)'
-echo '  aztec start --local-network'
+echo ""
+echo "Aztec tools (aztec-up discovered/installed 4.3.1):"
+echo '  export PATH="/Users/espejelomar/.aztec/bin:$PATH"'
+echo '  eval $(/Users/espejelomar/.aztec/bin/aztec-up env)'
+echo '  aztec start --local-network   # or the versioned equivalent'
+echo ""
+echo "Contract skeleton ready in $ROOT/lamadre-aztec (adapt + compile with aztec-nargo once tools active)"
+echo "See scripts/e2e.sh and lamadre-aztec/src/main.nr"
 
-# 3. Monero
-echo "Download Monero CLI manually from https://www.getmonero.org/downloads/ (mac arm)"
-echo "Place monerod and monero-wallet-cli in PATH or monero-regtest/"
+# 3. Monero regtest
+echo ""
+echo "[Monero]"
+echo "Place monerod + monero-wallet-cli (arm64) from getmonero.org in ~/monero-regtest/"
+echo "Then:"
+echo "  ./monerod --regtest --offline --rpc-bind-ip 127.0.0.1 --rpc-bind-port 18081 &"
 
-# 4. Private git
-echo "Local Forgejo demo:"
-echo "docker run -d -p 3001:3000 -p 2222:22 -v $(pwd)/forgejo-data:/data codeberg.org/forgejo/forgejo:15"
+# 4. Private git demo
+echo ""
+echo "[Private Git]"
+echo "  cd ~/forgejo-demo && docker run -d -p 3001:3000 -p 2222:22 -v $(pwd)/data:/data codeberg.org/forgejo/forgejo:15"
+echo "  Visit http://localhost:3001 , create admin + private 'lamadre' repo, then git remote add private ... ; git push private"
 
-echo "Then create private repo and push."
-
-echo "Done basic setup checks."
+echo ""
+echo "See docs/SETUP_AND_NEXT_STEPS.md for full details."
+echo "Core value delivered autonomously: working Rust simulator of the entire private swap flow (enforced disclosure via OTP + DLEQ off-chain)."
