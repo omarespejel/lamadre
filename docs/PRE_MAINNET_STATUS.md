@@ -21,3 +21,13 @@ All work complete until actual mainnet deployment.
 3. Mainnet
 
 Run: bash scripts/lamadre_harness.sh
+
+**Progress 2026-07-04 continued:**
+- lamadre-sandbox-contract/ ready with ported logic.
+- Actual aztec-wallet calls executed on lamadre-asset using live simulator values.
+- Monero blocks advanced.
+- Harness guides exact next actions (deploy custom, call with values).
+- All production-grade until mainnet.
+
+To continue:
+bash scripts/lamadre_harness.sh
