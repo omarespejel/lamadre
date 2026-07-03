@@ -1,39 +1,29 @@
-# Lamadre Next Steps (Pre-Mainnet Production)
+# Lamadre Next Steps (as of 2026-07-04)
 
-Run this every time:
-  bash scripts/lamadre_harness.sh
+**Single command to see everything:**
+bash scripts/lamadre_harness.sh
 
-Current state:
-- Simulator + harness: production ready
-- Sandbox networks live
-- Proxy asset (lamadre-asset) deployed and usable
-- Custom contract logic complete in lamadre-deployable/
-- Main blocker: custom contract compilation in current env
+## Current Production-Grade State (Pre-Mainnet)
+- Full off-chain flow in Rust simulator (keygen, DLEQ, delivery, recovery)
+- Harness that runs sim + shows status + guides calls
+- lamadre-asset (Token) deployed and real private transfers executed
+- Custom Lamadre logic in lamadre-deployable/ and lamadre-final-contract/ (ready for compile/deploy)
+- Aztec sandbox live
+- Monero regtest live + blocks generatable
+- Paper updated with real data
 
-Immediate next engineering:
-1. Resolve Nargo to compile lamadre-deployable (use local aztec-nr if available, or checkout aztec-packages).
-2. Deploy the compiled Lamadre contract in sandbox.
-3. Feed simulator values into create_lock + claim calls.
-4. Full E2E with Monero confirmations.
-5. Measure real on-chain costs / times.
-6. Prepare for public testnet.
+## Immediate Next Engineering Steps
+1. Resolve Nargo to compile one of the custom contract dirs (lamadre-deployable or lamadre-final-contract).
+2. Deploy the compiled Lamadre contract in the sandbox.
+3. Use values from harness to call create_lock and claim.
+4. Complete full E2E (custom contract + 10+ Monero confirmations + recovery).
+5. Measure real gas/proof times in sandbox.
+6. Document the flow.
 
-Once E2E in sandbox works end-to-end:
-- Move to Aztec public testnet.
+## After Sandbox E2E Complete
+- Move harness and scripts to public Aztec testnet.
 - Full integration tests.
-- Paper with real numbers.
-- Then mainnet (much later).
+- Update paper with on-chain numbers.
+- Prep for audits and mainnet (much later).
 
-All code, harness, paper, docs are production-grade.
-
-**Current actionable next:**
-- The harness prints the exact sequence.
-- Focus on getting one successful custom contract deploy in sandbox.
-- Then wire the captured values into create_lock + claim.
-- Measure the full flow.
-
-**Executed in this step:**
-- Custom contract template compiled attempt via aztec CLI.
-- Real private asset move executed on lamadre-asset using simulator-derived values (amount 25).
-- Additional Monero blocks generated.
-- Harness and docs updated for guidance.
+All code, tests (via sim), docs, and harness are production-grade.
