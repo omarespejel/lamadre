@@ -22,3 +22,7 @@ It will:
 4. Complete E2E with 10+ Monero confirmations.
 
 Once sandbox E2E is solid: move to public testnet.
+**Latest executed:**
+- Real private transfer_to_private on lamadre-asset with live values (30 units).
+- Harness now always runs the sim + a real call + prints the exact create_lock command template with values.
+- Monero blocks requested.
