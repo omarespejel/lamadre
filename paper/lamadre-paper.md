@@ -218,3 +218,5 @@ We are executing "all" in parallel: paper, harness, contract prep, network usage
 - Multiple commits pushed.
 
 The paper is now a strong, measured draft reflecting the implemented off-chain + simulator + live networks.
+
+**2026-07-04 late session:** Executable harness now prints ready-to-run aztec-wallet commands populated with live simulator values. Token proxy deploy path exercised. All core pieces (simulator, networks, harness, paper) advanced in parallel. Custom contract remains one compile/deploy step away due to current Nargo env.
