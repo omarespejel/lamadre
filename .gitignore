@@ -1,0 +1,36 @@
+# Build
+/target
+**/target
+/dist
+*.lock
+
+# Noir
+**/nargo-cache/
+*.json
+*.acir
+
+# IDE / editors
+.idea/
+.vscode/
+*.swp
+*~
+
+# Secrets / keys (never commit)
+*.key
+*.pem
+.env
+secrets/
+
+# Test artifacts
+/tmp-test-*
+/regtest-data
+/sandbox-data
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.log
+*.tmp
+*.bak

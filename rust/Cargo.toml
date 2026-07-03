@@ -1,0 +1,39 @@
+[package]
+name = "lamadre"
+version = "0.1.0"
+edition = "2021"
+authors = ["lamadre pseudonymous"]
+description = "Lamadre client: private XMR <-> Aztec atomic swaps (off-chain DLEQ + minimal on-chain delivery)"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/omarespejel/lamadre"
+
+[dependencies]
+# Reuse audited patterns from monero-starknet-atomic-swap and Serai/Farcaster style
+curve25519-dalek = { version = "4", features = ["serde"] }
+sha2 = "0.10"
+rand = "0.8"
+thiserror = "1"
+serde = { version = "1", features = ["derive"] }
+hex = "0.4"
+
+# Monero RPC / wallet2 style (in real: monero-rs or custom regtest client)
+# monero = { git = "...", optional }
+# For Aztec client: aztec.js or rust-grpc, but PXE is TS/JS heavy; here Rust side for crypto + Monero.
+
+# Noir / proof side: would link ACIR verifier or use bb.js via ffi in prod.
+# For now pure Rust for off-chain parts + witness prep.
+
+[dev-dependencies]
+proptest = "1"
+tokio = { version = "1", features = ["full"] }
+tempfile = "3"
+
+[features]
+default = []
+
+# [[bin]] disabled until cli implemented
+# name = "lamadre-cli"
+# path = "src/bin/cli.rs"
+
+[lib]
+path = "src/lib.rs"
