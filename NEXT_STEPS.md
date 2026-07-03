@@ -31,3 +31,9 @@ All code, harness, paper, docs are production-grade.
 - Focus on getting one successful custom contract deploy in sandbox.
 - Then wire the captured values into create_lock + claim.
 - Measure the full flow.
+
+**Executed in this step:**
+- Custom contract template compiled attempt via aztec CLI.
+- Real private asset move executed on lamadre-asset using simulator-derived values (amount 25).
+- Additional Monero blocks generated.
+- Harness and docs updated for guidance.
