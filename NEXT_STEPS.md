@@ -30,15 +30,3 @@ Once full E2E works end-to-end in sandbox:
 - Then mainnet (much later).
 
 All code, harness, paper, and docs are production-grade.
-**Latest:**
-- Harness now always runs sim + executes a real private move on the exact lamadre-asset address.
-- Prints the precise create_lock command template with values from that run.
-- Monero blocks requested.
-**Latest:**
-- Harness now always runs sim + executes a real private move on the exact lamadre-asset address.
-- Prints the precise create_lock command template with values from that run.
-- Monero blocks requested.
-**Latest:**
-- Harness now always runs sim + executes a real private move on the exact lamadre-asset address.
-- Prints the precise create_lock command template with values from that run.
-- Monero blocks requested.
