@@ -1,35 +1,24 @@
-# Lamadre Next Steps (as of 2026-07-04)
+# Lamadre Next Steps (Sandbox Pre-Mainnet)
 
-**Single command to see everything:**
+**Run every session:**
 bash scripts/lamadre_harness.sh
 
-## Current Production-Grade State (Pre-Mainnet)
-- Full off-chain flow in Rust simulator (keygen, DLEQ, delivery, recovery)
-- Harness that runs sim + shows status + guides calls
-- lamadre-asset (Token) deployed and real private transfers executed
-- Custom Lamadre logic in lamadre-deployable/ and lamadre-final-contract/ (ready for compile/deploy)
-- Aztec sandbox live
-- Monero regtest live + blocks generatable
-- Paper updated with real data
+It will:
+- Run the full simulator
+- Show live status
+- Execute a real private asset move on the deployed lamadre-asset
+- Print values for the custom Lamadre contract
 
-## Immediate Next Engineering Steps
-1. Resolve Nargo to compile one of the custom contract dirs (lamadre-deployable or lamadre-final-contract).
-2. Deploy the compiled Lamadre contract in the sandbox.
-3. Use values from harness to call create_lock and claim.
-4. Complete full E2E (custom contract + 10+ Monero confirmations + recovery).
-5. Measure real gas/proof times in sandbox.
-6. Document the flow.
+**Current State**
+- Simulator + harness: production ready
+- lamadre-asset deployed and real calls working
+- Custom contract logic in lamadre-clean/ and templates
+- Networks live
 
-## After Sandbox E2E Complete
-- Move harness and scripts to public Aztec testnet.
-- Full integration tests.
-- Update paper with on-chain numbers.
-- Prep for audits and mainnet (much later).
+**Immediate Next**
+1. Get custom Lamadre compiled (lamadre-clean or deployable) using aztec compile.
+2. Deploy it.
+3. Wire the captured HASHLOCK / C_K into create_lock + claim.
+4. Complete E2E with 10+ Monero confirmations.
 
-All code, tests (via sim), docs, and harness are production-grade.
-
-**Executed:**
-- Real private transfer_to_private on lamadre-asset using live sim values (30 units).
-- Harness now executes a real call every time.
-- Monero blocks advanced.
-- Values printed for when custom contract is deployed.
+Once sandbox E2E is solid: move to public testnet.
